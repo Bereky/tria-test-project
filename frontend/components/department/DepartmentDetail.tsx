@@ -7,28 +7,35 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   useGetDepartmentByIdQuery,
   useGetDepartmentsQuery,
-} from "@/lib/services/department/departmentApi";
+} from "@/lib/services/Api";
 import { useEffect } from "react";
-import { setCurrent } from "@/lib/features/department/departmentSlice";
+import {
+  resetDepartment,
+  setCurrent,
+} from "@/lib/features/department/departmentSlice";
 
 const DepartmentDetail = () => {
   const param = useParams();
 
   const id = param.id;
 
-  const { departments } = useAppSelector((state) => state.department);
+  const { current } = useAppSelector((state) => state.department);
   const dispatch = useAppDispatch();
 
-  const { isLoading, isFetching, data, error } = useGetDepartmentByIdQuery({
-    id: id,
-  });
+  const { isLoading, isFetching, data, error, refetch } =
+    useGetDepartmentByIdQuery({
+      id: id,
+    });
 
   useEffect(() => {
-    console.log(data);
     if (data) {
       dispatch(setCurrent(data));
     }
   }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col py-8 ">
@@ -44,11 +51,11 @@ const DepartmentDetail = () => {
               <div className="w-36 h-10 bg-sky-100"></div>
             </>
           )}
-          {data && (
+          {data && current && (
             <>
-              <h1 className="text-3xl uppercase font-bold">{data?.name}</h1>
+              <h1 className="text-3xl uppercase font-bold">{current?.name}</h1>
               <h1 className="text-md uppercase font-normal">
-                {data?.description}
+                {current?.description}
               </h1>
             </>
           )}
@@ -57,30 +64,31 @@ const DepartmentDetail = () => {
       <div className="w-full h-full py-5 ">
         <Tabs>
           <Tab label="Managing Department">
-            {data?.managingDepartment ? (
-              <p className="">
-                <span className="font-medium">
-                  {data?.managingDepartment?.name}{" "}
+            {data && current?.managingDepartment ? (
+              <p className="uppercase">
+                <span className="font-medium uppercase">
+                  {data && current?.managingDepartment?.name}{" "}
                 </span>{" "}
-                : {data?.managingDepartment.description}
+                : {data && current?.managingDepartment?.description}
               </p>
             ) : (
               <span className="font-medium">None </span>
             )}
           </Tab>
           <Tab label="Under Management">
-            {data?.underManagement.length <= 0 && (
+            {data && current?.underManagement?.length <= 0 && (
               <span className="font-medium">None</span>
             )}
 
-            {data?.underManagement?.map((item: {}) => {
-              return (
-                <p className="">
-                  <span className="font-medium">{item.name} </span> :{" "}
-                  {item.description}
-                </p>
-              );
-            })}
+            {data &&
+              current?.underManagement?.map((item: {}) => {
+                return (
+                  <p className="uppercase">
+                    <span className="font-medium uppercase">{item.name} </span>{" "}
+                    : {item.description}
+                  </p>
+                );
+              })}
           </Tab>
         </Tabs>
       </div>
