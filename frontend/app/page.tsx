@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="w-full h-full md:p-10 space-y-10">
@@ -17,13 +19,17 @@ export default function Home() {
         </h1>
       </div>
       <div className="w-full h-auto bg-slate-00 flex justify-center items-center absolute right-0 gap-3">
-        <button className="w-36 h-9 outline bg-sky-50 text-sky-700 outline-sky-600 hover:bg-sky-600 hover:text-sky-50 rounded-sm duration-300">
-          Department
-        </button>
+        <Link href={"/department"}>
+          <button className="w-36 h-9 outline  text-sky-700 outline-sky-600 hover:bg-sky-600 hover:text-sky-50 rounded-sm duration-300">
+            Department
+          </button>
+        </Link>
 
-        <button className="w-36 h-9 outline bg-sky-50 text-sky-700 outline-sky-600 hover:bg-sky-600 hover:text-sky-50 rounded-sm duration-300">
-          Customers
-        </button>
+        <Link href={"/customer"}>
+          <button className="w-36 h-9 outline  text-sky-700 outline-sky-600 hover:bg-sky-600 hover:text-sky-50 rounded-sm duration-300">
+            Customers
+          </button>
+        </Link>
       </div>
     </main>
   );
