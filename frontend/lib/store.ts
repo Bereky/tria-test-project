@@ -1,17 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import departmentRducer from "./features/department/departmentSlice";
-import { departmentApi } from "./services/department/departmentApi";
-import { setupListeners } from "@reduxjs/toolkit/query";
+import departmentReducer from "./features/department/departmentSlice";
+import customerReducer from "./features/customer/customerSlice";
+import { Api } from "./services/Api";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      department: departmentRducer,
-      [departmentApi.reducerPath]: departmentApi.reducer,
+      department: departmentReducer,
+      customer: customerReducer,
+      [Api.reducerPath]: Api.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({}).concat([departmentApi.middleware]),
+      getDefaultMiddleware({}).concat([Api.middleware]),
   });
 };
 
