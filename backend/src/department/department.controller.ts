@@ -8,8 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { DepartmentService } from './department.service';
-import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { DepartmentDto } from './dto/department.dto';
 
 @Controller('department')
 export class DepartmentController {
@@ -29,13 +28,13 @@ export class DepartmentController {
   }
 
   @Post()
-  createDepartment(@Body() dto: CreateDepartmentDto) {
+  createDepartment(@Body() dto: DepartmentDto) {
     return this.departmentService.createDepartment(dto);
   }
 
   @Put(':id')
   updatDepartment(
-    @Body() dto: UpdateDepartmentDto,
+    @Body() dto: DepartmentDto,
     @Param('id')
     departmentId: string,
   ) {
