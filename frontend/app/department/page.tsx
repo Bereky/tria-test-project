@@ -6,7 +6,7 @@ import CardContainer from "@/components/department/CardContainer";
 import AddDepartmentModal from "@/components/Modal/AddDepartmentModal";
 import AddButton from "@/components/Button/AddButton";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useGetDepartmentsQuery } from "@/lib/services/department/departmentApi";
+import { useGetDepartmentsQuery } from "@/lib/services/Api";
 import CardContainerLoading from "@/components/department/CardContainerLoading";
 import { setDepartments } from "@/lib/features/department/departmentSlice";
 
