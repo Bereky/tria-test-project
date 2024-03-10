@@ -1,7 +1,7 @@
 import { setDepartments } from "@/lib/features/department/departmentSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { createDepartment } from "@/lib/services/department";
-import { useForm } from "react-hook-form";
+import { createDepartment } from "@/lib/services/common/department";
+import { Field, FieldValues, useForm } from "react-hook-form";
 
 import { toast, ToastContainer } from "react-toastify";
 
@@ -25,10 +25,8 @@ const AddDepartmentModal = ({ toggle }: any) => {
   const { departments } = useAppSelector((state) => state.department);
   const dispatch = useAppDispatch();
 
-  const CreateDepartment = async (FD) => {
+  const CreateDepartment = async (FD: FieldValues) => {
     const res: any = await createDepartment(FD);
-
-    console.log(res);
 
     if (res?.data?.success) {
       toggle(false);
@@ -39,9 +37,7 @@ const AddDepartmentModal = ({ toggle }: any) => {
     }
   };
 
-  const onSubmit = handleSubmit(async (formValue) => {
-    console.log(formValue);
-
+  const onSubmit = handleSubmit(async (formValue: FieldValues) => {
     CreateDepartment(formValue);
   });
 

@@ -1,6 +1,6 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { deleteDepartment } from "@/lib/services/department";
+import { deleteDepartment } from "@/lib/services/common/department";
 import { useRouter, redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
@@ -12,8 +12,6 @@ const DeleteDepartmentModal = ({ toggle }: any) => {
 
   const DeleteDepartment = async (id) => {
     const res: any = await deleteDepartment(id);
-
-    console.log(res);
 
     if (res?.data?.success) {
       toggle(false);
