@@ -8,6 +8,7 @@ import DeleteDepartmentModal from "@/components/Modal/DeleteDepartmentModal";
 import EditButton from "@/components/Button/EditButton";
 import BackButton from "@/components/Button/BackButton";
 import DeleteButton from "@/components/Button/DeleteButton";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 interface ModalState {
   state: boolean;
@@ -15,6 +16,9 @@ interface ModalState {
 }
 
 const page = () => {
+  const { departments, current } = useAppSelector((state) => state.department);
+  const dispatch = useAppDispatch();
+
   const [modalUpdateState, setModalUpdateState] = useState({
     state: false,
     id: "",
