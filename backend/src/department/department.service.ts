@@ -5,9 +5,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
-import { error } from 'console';
+import { DepartmentDto } from './dto/department.dto';
 
 @Injectable()
 export class DepartmentService {
@@ -17,7 +15,7 @@ export class DepartmentService {
     return await this.prisma.department.findMany();
   }
 
-  getDepartmentById(departmentId: string) {
+  async getDepartmentById(departmentId: string) {
     return this.prisma.department.findUnique({
       where: {
         id: departmentId,
@@ -35,8 +33,8 @@ export class DepartmentService {
   }
 
   async createDepartment(
-    dto: CreateDepartmentDto,
-  ): Promise<{ data: CreateDepartmentDto[]; success: boolean; message: any }> {
+    dto: DepartmentDto,
+  ): Promise<{ data: DepartmentDto[]; success: boolean; message: any }> {
     console.log(dto);
     try {
       // check if already exist
@@ -85,15 +83,65 @@ export class DepartmentService {
     }
   }
 
-  async updateDepartment(departmentId: string, dto: UpdateDepartmentDto) {
-    return await this.prisma.department.update({
-      where: {
-        id: departmentId,
-      },
-      data: {
-        ...dto,
-      },
-    });
+  async updateDepartment(
+    departmentId: string,
+    dto: DepartmentDto,
+  ): Promise<{ data: DepartmentDto; success: boolean; message: any }> {
+    try {
+      if (!dto.managingDepartmentId) {
+        // department without manager
+        const update = await this.prisma.department.update({
+          where: {
+            id: departmentId,
+          },
+          data: {
+            name: dto.name,
+            description: dto.description,
+            managingDepartmentId: null,
+          },
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            managingDepartmentId: true,
+            underManagement: true,
+            managingDepartment: true,
+          },
+        });
+
+        return {
+          data: update,
+          success: true,
+          message: 'Department updated successfully',
+        };
+      } else {
+        // department with manager
+        const update = await this.prisma.department.update({
+          where: {
+            id: departmentId,
+          },
+          data: {
+            ...dto,
+          },
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            managingDepartmentId: true,
+            underManagement: true,
+            managingDepartment: true,
+          },
+        });
+
+        return {
+          data: update,
+          success: true,
+          message: 'Department updated successfully',
+        };
+      }
+    } catch (err) {
+      throw new HttpException({ message: err.message }, null);
+    }
   }
 
   async deleteDepartment(
@@ -104,6 +152,21 @@ export class DepartmentService {
         where: {
           id: departmentId,
         },
+        select: {
+          underManagement: true,
+        },
+      });
+
+      // propagate the change to under managements
+      deleted.underManagement.map(async (item) => {
+        await this.prisma.department.update({
+          where: {
+            id: item.id,
+          },
+          data: {
+            managingDepartmentId: null,
+          },
+        });
       });
 
       return { success: true, message: 'Department deleted successfully' };
