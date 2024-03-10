@@ -1,20 +1,39 @@
+"use client";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { deleteDepartment } from "@/lib/services/department";
+import { useRouter, redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
 
 const DeleteDepartmentModal = ({ toggle }: any) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setError,
-  } = useForm();
+  const { departments, current } = useAppSelector((state) => state.department);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const onSubmit = handleSubmit(async (formData) => {});
+  const DeleteDepartment = async (id) => {
+    const res: any = await deleteDepartment(id);
+
+    console.log(res);
+
+    if (res?.data?.success) {
+      toggle(false);
+      toast.success(res?.data?.message);
+      router.push("/department");
+    } else {
+      toast.error(res?.response?.data.errors.message);
+    }
+  };
+
+  const handelDelete = () => {
+    if (current?.id) {
+      DeleteDepartment(current?.id);
+    }
+  };
 
   return (
     <div className="fixed w-full h-full min-w-screen min--screen bg-zinc-900 bg-opacity-60 z-50 p-6 flex justify-center items-center top-0 right-0 left-0 ">
       <div className="md:w-2/3 md:h-auto bg-zinc-100 rounded-md px-5 py-2 max-h-screen overflow-auto duration-300">
-        <form className="w-full h-full flex flex-col bg-gray-00">
+        <div className="w-full h-full flex flex-col bg-gray-00">
           <div className="w-full h-12 flex flex-row border-b border-sky-400">
             <div className="w-full h-full flex justify-start items-center">
               <h1 className="text-lg font-medium">Remove Deprtment</h1>
@@ -42,14 +61,14 @@ const DeleteDepartmentModal = ({ toggle }: any) => {
                 Cancel
               </button>
               <button
-                type="submit"
+                onClick={handelDelete}
                 className="w-auto h-8 bg-rose-600 hover:bg-rose-500 text-sky-50 outline outline-rose-500 p-3 flex justify-between items-center rounded-sm text-sm"
               >
                 Submit
               </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
