@@ -12,6 +12,7 @@ const Header = () => {
     }
     return "";
   };
+
   return (
     <div className="w-full h-20 bg-zinc-00 text-sky-600 flex flex-row justify-between items-center z-20 right-0 border-b-2 border-sky-700 border-opacity-35 px-10">
       <div className="w-64 h-full bg-slate-00 flex justify-start items-center">
