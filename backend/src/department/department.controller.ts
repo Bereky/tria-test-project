@@ -22,7 +22,7 @@ export class DepartmentController {
 
   @Get(':id')
   getDepartmentById(
-    @Param()
+    @Param('id')
     departmentId: string,
   ) {
     return this.departmentService.getDepartmentById(departmentId);
@@ -47,6 +47,7 @@ export class DepartmentController {
     @Param('id')
     departmentId: string,
   ) {
+    console.log(departmentId);
     return this.departmentService.deleteDepartment(departmentId);
   }
 }
