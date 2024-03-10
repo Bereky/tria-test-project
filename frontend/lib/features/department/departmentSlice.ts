@@ -19,10 +19,10 @@ const initialState: DepartmentState = {
 };
 
 export const department = createSlice({
-  name: "counter",
+  name: "department",
   initialState,
   reducers: {
-    reset: () => initialState,
+    resetDepartment: () => initialState,
     setDepartments: (state, action: PayloadAction<[]>) => {
       state.departments = action.payload;
     },
@@ -32,5 +32,6 @@ export const department = createSlice({
   },
 });
 
-export const { reset, setDepartments, setCurrent } = department.actions;
+export const { resetDepartment, setDepartments, setCurrent } =
+  department.actions;
 export default department.reducer;
