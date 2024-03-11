@@ -33,6 +33,9 @@ const AddDepartmentModal = ({ toggle }: any) => {
       toast.success(res?.data?.message);
       dispatch(setDepartments(res?.data?.data));
     } else {
+      if (res?.message) {
+        return toast.error(res.message);
+      }
       toast.error(res?.response?.data.errors.message);
     }
   };

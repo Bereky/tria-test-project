@@ -32,6 +32,9 @@ const UpdateDepartmentModal = ({ toggle }: any) => {
       toast.success(res?.data?.message);
       dispatch(setCurrent(res?.data?.data));
     } else {
+      if (res?.message) {
+        return toast.error(res.message);
+      }
       toast.error(res?.response?.data.errors.message);
     }
   };

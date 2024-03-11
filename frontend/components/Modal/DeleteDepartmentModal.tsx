@@ -18,6 +18,9 @@ const DeleteDepartmentModal = ({ toggle }: any) => {
       toast.success(res?.data?.message);
       router.push("/department");
     } else {
+      if (res?.message) {
+        return toast.error(res.message);
+      }
       toast.error(res?.response?.data.errors.message);
     }
   };

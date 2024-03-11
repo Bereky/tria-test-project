@@ -37,6 +37,9 @@ const AddCustomerModal = ({ toggle }: any) => {
       toast.success(res?.data?.message);
       dispatch(setCustomers(res?.data?.data));
     } else {
+      if (res?.message) {
+        return toast.error(res.message);
+      }
       toast.error(res?.response?.data.errors.message);
     }
   };
