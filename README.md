@@ -31,6 +31,7 @@ Keep the docker compose running and start another terminal to run the commands i
 
    ```
    cd frontend
+   npm install
    npm run dev
    ```
 
@@ -38,6 +39,9 @@ Keep the docker compose running and start another terminal to run the commands i
 
 ```
 cd backend
+npm install
+npx prisma generate
+npx prisma migrate dev
 npm run start:dev
 ```
 
