@@ -10,6 +10,7 @@ import { setCustomers } from "@/lib/features/customer/customerSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useGetCustomersQuery } from "@/lib/services/Api";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const page = () => {
   const { customers } = useAppSelector((state) => state.customer);
@@ -53,7 +54,14 @@ const page = () => {
     if (data) {
       dispatch(setCustomers(data));
     }
-  }, [data, customers]);
+
+    if (error) {
+      if (error.status) {
+        return toast.error(error.data?.message);
+      }
+      toast.error(error.error);
+    }
+  }, [data, error, customers]);
 
   useEffect(() => {
     refetch();

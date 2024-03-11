@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useGetDepartmentsQuery } from "@/lib/services/Api";
 import CardContainerLoading from "@/components/department/CardContainerLoading";
 import { setDepartments } from "@/lib/features/department/departmentSlice";
+import { toast } from "react-toastify";
 
 const page = () => {
   const { departments } = useAppSelector((state) => state.department);
@@ -27,7 +28,15 @@ const page = () => {
     if (data) {
       dispatch(setDepartments(data));
     }
-  }, [data, departments]);
+
+    if (error) {
+      console.log(error);
+      if (error.status) {
+        return toast.error(error.data?.message);
+      }
+      toast.error(error.error);
+    }
+  }, [data, error, departments]);
 
   useEffect(() => {
     refetch();
