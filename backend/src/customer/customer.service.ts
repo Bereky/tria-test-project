@@ -45,7 +45,7 @@ export class CustomerService {
         throw new HttpException({ errors }, 400);
       }
 
-      // department with manager
+      // create customer
       await this.prisma.customer.create({
         data: {
           ...dto,
@@ -69,7 +69,7 @@ export class CustomerService {
     dto: CustomerDto,
   ): Promise<{ data: CustomerDto[]; success: boolean; message: any }> {
     try {
-      // department with manager
+      // update customer
       const update = await this.prisma.customer.update({
         where: {
           id: customerId,
