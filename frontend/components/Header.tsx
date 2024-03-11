@@ -25,7 +25,7 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="w-auto h-full bg-slate-700 flex justify-center items-center relative">
+      <div className=" w-auto h-full bg-slate-700 flex justify-center items-center relative">
         <div className=" w-10 h-full  md:hidden flex justify-center items-center absolute right-0 gap-3">
           <button
             onClick={() => setSidebar(!sidebar)}
@@ -36,7 +36,7 @@ const Header = () => {
         </div>
 
         {sidebar && (
-          <div className="h-36 w-full min-w-full fixed bg-sky-100 top-20 left-0 right-0 ">
+          <div className="md:hidden h-36 w-full min-w-full fixed bg-sky-100 top-20 left-0 right-0 ">
             <div className="w-full h-full bg-slate-00 flex justify-center items-center flex-col absolute right-0 gap-4">
               <Link href={"/department"}>
                 <button
