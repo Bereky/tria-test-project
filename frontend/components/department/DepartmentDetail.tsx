@@ -13,6 +13,7 @@ import {
   resetDepartment,
   setCurrent,
 } from "@/lib/features/department/departmentSlice";
+import { toast } from "react-toastify";
 
 const DepartmentDetail = () => {
   const param = useParams();
@@ -31,7 +32,14 @@ const DepartmentDetail = () => {
     if (data) {
       dispatch(setCurrent(data));
     }
-  }, [data]);
+
+    if (error) {
+      if (error.status) {
+        return toast.error(error.data?.message);
+      }
+      toast.error(error.error);
+    }
+  }, [data, error]);
 
   useEffect(() => {
     refetch();
